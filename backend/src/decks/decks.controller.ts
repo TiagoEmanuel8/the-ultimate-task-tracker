@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  Res,
+  HttpStatus,
 } from '@nestjs/common';
 import { DecksService } from './decks.service';
 import { CreateDeckDto } from './dto/create-deck.dto';
@@ -16,8 +18,17 @@ export class DecksController {
   constructor(private readonly decksService: DecksService) {}
 
   @Post()
-  create(@Body() createDeckDto: CreateDeckDto) {
-    return this.decksService.create(createDeckDto);
+  async create(@Res() response, @Body() createDeckDto: CreateDeckDto) {
+    try {
+      const newDeck = await this.decksService.create(createDeckDto);
+      return response.status(HttpStatus.CREATED).json(newDeck);
+    } catch (err) {
+      return response.status(HttpStatus.BAD_REQUEST).json({
+        statusCode: 400,
+        message: 'Error: Task not created!',
+        error: 'Bad Request',
+      });
+    }
   }
 
   @Get()
