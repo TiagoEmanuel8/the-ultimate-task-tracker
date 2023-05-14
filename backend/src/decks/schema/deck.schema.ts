@@ -8,8 +8,11 @@ export class Deck {
   @Prop()
   title: string;
 
-  @Prop([String])
-  cards: string[];
+  // @Prop([String])
+  // cards: string[];
+
+  @Prop()
+  cards: string;
 }
 
 export const DeckSchema = SchemaFactory.createForClass(Deck);

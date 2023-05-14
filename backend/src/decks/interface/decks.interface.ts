@@ -1,6 +1,7 @@
 import { Document } from 'mongoose';
 
 export interface IDeck extends Document {
-  name: string;
-  title: [string];
+  title: string;
+  cards: string;
+  // cards: [string];
 }
