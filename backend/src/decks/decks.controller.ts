@@ -32,8 +32,13 @@ export class DecksController {
   }
 
   @Get()
-  findAll() {
-    return this.decksService.findAll();
+  async findAll(@Res() response) {
+    try {
+      const decks = await this.decksService.findAll();
+      return response.status(HttpStatus.OK).json(decks);
+    } catch (err) {
+      return response.status(err.status).json(err.response);
+    }
   }
 
   @Get(':id')

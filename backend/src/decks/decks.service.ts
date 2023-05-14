@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateDeckDto } from './dto/create-deck.dto';
 import { Deck } from './schema/deck.schema';
@@ -15,8 +15,12 @@ export class DecksService {
     return createdTask.save();
   }
 
-  findAll() {
-    return `This action returns all decks`;
+  async findAll() {
+    const deckData = await this.deckModel.find();
+    if (!deckData || deckData.length == 0) {
+      throw new NotFoundException('Tasks data not found!');
+    }
+    return deckData;
   }
 
   findOne(id: number) {
