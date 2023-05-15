@@ -43,7 +43,11 @@ export class DecksService {
     return updateDeck;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} deck`;
+  async remove(deckId: string) {
+    const deletedDeck = await this.deckModel.findByIdAndDelete(deckId);
+    if (!deletedDeck) {
+      throw new NotFoundException(`Deck #${deletedDeck} not found`);
+    }
+    return deletedDeck;
   }
 }

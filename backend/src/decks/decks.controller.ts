@@ -69,7 +69,12 @@ export class DecksController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.decksService.remove(+id);
+  async remove(@Res() response, @Param('id') deckId: string) {
+    try {
+      const deck = await this.decksService.remove(deckId);
+      return response.status(HttpStatus.OK).json(deck);
+    } catch (err) {
+      return response.status(err.status).json(err.response);
+    }
   }
 }
