@@ -23,8 +23,12 @@ export class DecksService {
     return deckData;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} deck`;
+  async findOne(deckId: string) {
+    const deck = await this.deckModel.findById(deckId).exec();
+    if (!deck) {
+      throw new NotFoundException(`Deck #${deck} not found`);
+    }
+    return deck;
   }
 
   update(id: number, updateDeckDto: UpdateDeckDto) {

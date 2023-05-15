@@ -41,9 +41,14 @@ export class DecksController {
     }
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.decksService.findOne(+id);
+  @Get('/:id')
+  async findOne(@Res() response, @Param('id') deckId: string) {
+    try {
+      const deck = await this.decksService.findOne(deckId);
+      return response.status(HttpStatus.OK).json(deck);
+    } catch (err) {
+      return response.status(err.status).json(err.response);
+    }
   }
 
   @Patch(':id')
