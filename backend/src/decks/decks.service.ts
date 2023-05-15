@@ -31,8 +31,16 @@ export class DecksService {
     return deck;
   }
 
-  update(id: number, updateDeckDto: UpdateDeckDto) {
-    return `This action updates a #${id} deck`;
+  async update(deckId: string, updateDeckDto: UpdateDeckDto) {
+    const updateDeck = await this.deckModel.findByIdAndUpdate(
+      deckId,
+      updateDeckDto,
+      { new: true },
+    );
+    if (!updateDeck) {
+      throw new NotFoundException(`Deck #${updateDeck} not found`);
+    }
+    return updateDeck;
   }
 
   remove(id: number) {

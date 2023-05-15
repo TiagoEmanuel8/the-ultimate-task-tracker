@@ -52,8 +52,20 @@ export class DecksController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDeckDto: UpdateDeckDto) {
-    return this.decksService.update(+id, updateDeckDto);
+  async update(
+    @Res() response,
+    @Param('id') deckId: string,
+    @Body() UpdateDeckDto: UpdateDeckDto,
+  ) {
+    try {
+      const existingStudent = await this.decksService.update(
+        deckId,
+        UpdateDeckDto,
+      );
+      return response.status(HttpStatus.OK).json(existingStudent);
+    } catch (err) {
+      return response.status(err.status).json(err.response);
+    }
   }
 
   @Delete(':id')
