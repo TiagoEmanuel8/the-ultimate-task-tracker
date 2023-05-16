@@ -20,6 +20,7 @@ export class DecksController {
   @Post()
   async create(@Res() response, @Body() createDeckDto: CreateDeckDto) {
     try {
+      console.log(createDeckDto);
       const newDeck = await this.decksService.create(createDeckDto);
       return response.status(HttpStatus.CREATED).json(newDeck);
     } catch (err) {
